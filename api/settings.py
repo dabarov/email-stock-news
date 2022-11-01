@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ["host.docker.internal"]
+ALLOWED_HOSTS = ['host.docker.internal', 'localhost']
 
 # Application definition
 
@@ -130,9 +130,9 @@ CELERY_BROKER_URL = "redis://redis:6379/0"
 CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 
 CELERY_BEAT_SCHEDULE = {
-    'fetch-ticker-news-every-hour': {
-        'task': 'stock_news.tasks.fetch_tickers_news',
-        'schedule': crontab(minute=0, hour=19),
+    'fetch-daily-summary': {
+        'task': 'notifications.tasks.fetch_daily_summary',
+        'schedule': 30,
     },
 }
 
