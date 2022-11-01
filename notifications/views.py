@@ -31,11 +31,9 @@ def unsubscribe_from_ticker(request):
 
 @api_view(["POST"])
 def email_fetched_news(request):
-    ticker = request.data.get("ticker")
-    news = request.data.get("news")
+    ticker, news = request.data.get("ticker"), request.data.get("news")
     subject = f"News regarding {ticker}"
-    email_from = settings.EMAIL_HOST_USER
-    recipient_list = list(UserSubscription.objects.filter(ticker=ticker, active=True).values_list("email"))
+    recipient_list = list(UserSubscription.objects.filter(ticker=ticker, active=True).values_list("email", flat=True))
     if news and recipient_list:
-        send_mail(subject, news, email_from, recipient_list)
+        send_mail(subject, news, settings.EMAIL_HOST_USER, recipient_list)
     return Response(status=status.HTTP_200_OK)
