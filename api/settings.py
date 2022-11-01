@@ -130,9 +130,9 @@ CELERY_BROKER_URL = "redis://redis:6379/0"
 CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 
 CELERY_BEAT_SCHEDULE = {
-    'fetch-daily-summary': {
+    'fetch_daily_summary': {
         'task': 'notifications.tasks.fetch_daily_summary',
-        'schedule': 30,
+        'schedule': crontab(minute=0, hour=19),
     },
 }
 
